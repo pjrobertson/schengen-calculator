@@ -11,5 +11,6 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  base: "/",
+  // Use "/" for GitHub Pages, "" for Capacitor builds
+  base: process.env.GITHUB_ACTIONS === 'true' ? '/' : '',
 })

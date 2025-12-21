@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import EmojiPicker, { Theme } from 'emoji-picker-react';
+import EmojiPicker, { Theme, EmojiStyle } from 'emoji-picker-react';
 import type { EmojiClickData } from 'emoji-picker-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Smile } from 'lucide-react';
@@ -39,6 +39,7 @@ export function EmojiPickerPopover({ value, onChange, children }: EmojiPickerPop
           width={350}
           height={400}
           previewConfig={{ showPreview: false }}
+          emojiStyle={EmojiStyle.NATIVE}
         />
       </PopoverContent>
     </Popover>
