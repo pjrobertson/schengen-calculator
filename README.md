@@ -22,6 +22,8 @@ The Schengen Area allows visa-free travel for tourists, but with an important re
 - **Date Range Picker**: Easily select trip dates with a two-click interface
 - **Trip Dialog**: Click on calendar dates to view and edit existing trips
 - **Status Summary**: See your current status, total trips, and total days
+- **About Section**: Comprehensive information about the Schengen 90/180 rule, visa requirements, and how to use the calculator
+- **SEO Optimized**: Optimized for search engines to help travelers find this free tool
 - **Mobile Responsive**: Optimized layout for both desktop and mobile devices
 - **Local Storage**: Your trip data is saved automatically in your browser
 

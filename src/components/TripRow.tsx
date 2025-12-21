@@ -142,7 +142,7 @@ export function TripRow({
 
   // Horizontal layout (for table)
   return (
-    <div className="grid grid-cols-[1.5fr_2fr_60px_40px] sm:grid-cols-[0.7fr_1.2fr_170px_48px] gap-2 sm:gap-4 px-2 sm:px-4 py-3 border-b border-gray-200 last:border-b-0 hover:bg-gray-50 transition-colors">
+    <div className="grid grid-cols-[1.5fr_2fr_60px_40px] sm:grid-cols-[0.7fr_1.2fr_0.6fr_48px] gap-2 sm:gap-4 px-2 sm:px-4 py-3 border-b border-gray-200 last:border-b-0 hover:bg-gray-50 transition-colors">
       {/* Name column with inline editing */}
       <div className="flex items-center gap-1 sm:gap-2 min-w-0">
         {editingName ? (

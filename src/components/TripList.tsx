@@ -169,7 +169,7 @@ export function TripList({ trips, onRemoveTrip, onUpdateTrip, onAddTrip }: TripL
 
       <div className="border border-gray-200 rounded-lg overflow-hidden">
         {/* Table header */}
-        <div className="grid grid-cols-[1.5fr_2fr_60px_40px] sm:grid-cols-[0.7fr_1.2fr_170px_48px] gap-2 sm:gap-4 bg-gray-50 px-2 sm:px-4 py-3 font-medium text-xs sm:text-sm border-b border-gray-200">
+        <div className="grid grid-cols-[1.5fr_2fr_60px_40px] sm:grid-cols-[0.7fr_1.2fr_0.6fr_48px] gap-2 sm:gap-4 bg-gray-50 px-2 sm:px-4 py-3 font-medium text-xs sm:text-sm border-b border-gray-200">
           <div>Name</div>
           <div>Date Range</div>
           <div className="text-center">
@@ -181,7 +181,7 @@ export function TripList({ trips, onRemoveTrip, onUpdateTrip, onAddTrip }: TripL
 
         {/* New trip row */}
         {isAdding && (
-          <div className="grid grid-cols-[1.5fr_2fr_60px_40px] sm:grid-cols-[0.7fr_1.2fr_170px_48px] gap-2 sm:gap-4 px-2 sm:px-4 py-3 border-b border-gray-200 bg-blue-50">
+          <div className="grid grid-cols-[1.5fr_2fr_60px_40px] sm:grid-cols-[0.7fr_1.2fr_0.6fr_48px] gap-2 sm:gap-4 px-2 sm:px-4 py-3 border-b border-gray-200 bg-blue-50">
             {/* Name field */}
             <input
               type="text"
