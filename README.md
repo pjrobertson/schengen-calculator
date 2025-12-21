@@ -1,10 +1,12 @@
 # Schengen Calculator
 
-A web application to help travelers track their time spent in the Schengen Area and ensure compliance with the 90/180 rule. Written from 20+ years of development experience guiding an AI tool.
+[View Live Schengen Visa Calculator Demo](https://schengen.patrick.is)
+
+A web application to help travellers track their time spent in the Schengen Area and ensure compliance with the Schengen 90/180 rule in Europe. Written with 20+ years of development experience, guiding an AI tool (because leaving AI to do its thing alone will give you garbage).
 
 ## Overview
 
-The Schengen Area allows visa-free travel for tourists, but with an important restriction: you can only spend **90 days within any 180-day period** in the Schengen zone. This calculator helps you:
+The Schengen Area allows visa-free travel for many, but with an important restriction: you can only spend **90 days within any 180-day period** in the Schengen zone. This calculator helps you:
 
 - Track all your trips to the Schengen Area
 - See how many days you have remaining at any given time
@@ -30,13 +32,9 @@ The Schengen Area allows visa-free travel for tourists, but with an important re
 ## Technology Stack
 
 - **React 19** - UI framework
-- **TypeScript** - Type safety
 - **Vite** - Build tool and dev server
 - **Tailwind CSS 4** - Styling
 - **shadcn/ui** - UI components
-- **date-fns** - Date manipulation
-- **React Day Picker** - Calendar component
-- **Lucide React** - Icons
 
 ## Getting Started
 
@@ -101,7 +99,3 @@ npm run preview
 ## License
 
 This project is open source and available under the MIT License.
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
