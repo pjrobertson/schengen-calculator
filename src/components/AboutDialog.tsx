@@ -106,7 +106,7 @@ export function AboutDialog({ open, onOpenChange }: AboutDialogProps) {
                 rel="noopener noreferrer"
                 className="text-blue-600 hover:underline font-medium"
               >
-                Patrick Robertson
+                Paddy Robertson
               </a>
               {' '}to help travelers navigate the complexities of the Schengen 90/180 rule. I built this after experiencing the confusion of tracking my own trips across Europe, and I hope it makes your travel planning easier and stress-free.
             </p>

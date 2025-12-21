@@ -193,7 +193,7 @@ export function Calendar({ trips, onCreateTrip, onUpdateTrip, onRemoveTrip }: Ca
       <div className="flex items-center justify-between mb-4 px-2">
         <button
           onClick={previousMonth}
-          className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+          className="p-2 hover:bg-gray-100 cursor-pointer rounded-lg transition-colors"
           aria-label="Previous month"
         >
           <ChevronLeft className="w-5 h-5" />
@@ -205,7 +205,7 @@ export function Calendar({ trips, onCreateTrip, onUpdateTrip, onRemoveTrip }: Ca
           </h2>
           <button
             onClick={goToToday}
-            className="px-3 py-1 text-sm bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
+            className="px-3 py-1 text-sm bg-blue-500 text-white rounded-md hover:bg-blue-600 cursor-pointer transition-colors"
           >
             Today
           </button>
@@ -213,7 +213,7 @@ export function Calendar({ trips, onCreateTrip, onUpdateTrip, onRemoveTrip }: Ca
 
         <button
           onClick={nextMonth}
-          className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+          className="p-2 hover:bg-gray-100 cursor-pointer rounded-lg transition-colors"
           aria-label="Next month"
         >
           <ChevronRight className="w-5 h-5" />

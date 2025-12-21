@@ -123,38 +123,16 @@ export function TripList({ trips, onRemoveTrip, onUpdateTrip, onAddTrip }: TripL
     });
   }, [trips, sortedTrips]);
 
-  if (trips.length === 0 && !isAdding) {
-    return (
-      <div className="w-full max-w-4xl mx-auto">
-        {/* Header with Add Trip button */}
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-semibold">Trip View</h2>
-          <button
-            onClick={handleStartAddTrip}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-white bg-green-500 hover:bg-green-600 rounded-md transition-colors"
-            title="Add trip"
-          >
-            <Plus className="w-4 h-4" />
-            Add Trip
-          </button>
-        </div>
-        <div className="text-center py-8 text-gray-500">
-          No trips added yet. Click two dates on the calendar or use the "Add Trip" button above.
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="w-full max-w-4xl mx-auto">
       {/* Header with Plus and Undo buttons */}
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xl font-semibold">Trip View</h2>
+        <h2 className="text-xl font-semibold">All Trips</h2>
         <div className="flex items-center gap-2">
           <button
             onClick={handleStartAddTrip}
             disabled={isAdding}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-white bg-green-500 hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed rounded-md transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-white bg-green-500 cursor-pointer hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed rounded-md transition-colors"
             title="Add trip"
           >
             <Plus className="w-4 h-4" />
@@ -175,7 +153,8 @@ export function TripList({ trips, onRemoveTrip, onUpdateTrip, onAddTrip }: TripL
 
       <div className="border border-gray-200 rounded-lg overflow-hidden">
         {/* Table header */}
-        <div className="grid grid-cols-[1.5fr_2fr_60px_40px] sm:grid-cols-[0.7fr_1.2fr_0.6fr_48px] gap-2 sm:gap-4 bg-gray-50 px-2 sm:px-4 py-3 font-medium text-xs sm:text-sm border-b border-gray-200">
+        {(trips.length > 0 || isAdding) && (
+        <div className="grid grid-cols-[1.5fr_2fr_60px_36px] sm:grid-cols-[0.7fr_1.2fr_0.6fr_36px] gap-2 sm:gap-4 bg-gray-50 px-2 sm:px-4 py-3 font-medium text-xs sm:text-sm border-b border-gray-200">
           <div>Name</div>
           <div>Date Range</div>
           <div className="text-center">
@@ -184,10 +163,11 @@ export function TripList({ trips, onRemoveTrip, onUpdateTrip, onAddTrip }: TripL
           </div>
           <div></div>
         </div>
+        )}
 
         {/* New trip row */}
         {isAdding && (
-          <div className="grid grid-cols-[1.5fr_2fr_60px_40px] sm:grid-cols-[0.7fr_1.2fr_0.6fr_48px] gap-2 sm:gap-4 px-2 sm:px-4 py-3 border-b border-gray-200 bg-blue-50">
+          <div className="grid grid-cols-[1.5fr_2fr_60px_36px] sm:grid-cols-[0.7fr_1.2fr_0.6fr_36px] gap-2 sm:gap-4 px-2 sm:px-4 py-3 border-b border-gray-200 bg-blue-50">
             {/* Name field with icon */}
             <div className="flex items-center gap-1 sm:gap-2 min-w-0">
               <EmojiPickerPopover
@@ -250,7 +230,7 @@ export function TripList({ trips, onRemoveTrip, onUpdateTrip, onAddTrip }: TripL
               </button>
               <button
                 onClick={handleCancelNewTrip}
-                className="p-1 sm:p-1.5 text-red-600 hover:bg-red-50 rounded transition-colors"
+                className="p-1 sm:p-1.5 text-red-600 hover:bg-red-50 cursor-pointer rounded transition-colors"
                 aria-label="Cancel"
               >
                 <X className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
@@ -260,6 +240,11 @@ export function TripList({ trips, onRemoveTrip, onUpdateTrip, onAddTrip }: TripL
         )}
 
         {/* Table body */}
+        {trips.length === 0 && !isAdding && (
+          <div className="text-center py-8 text-gray-500">
+          No trips added yet. Click two dates on the calendar or use the "Add Trip" button above.
+        </div>
+        )}
         {tripsWithDisabledDates.map(({ trip, disabledDates }) => (
           <TripRow
             key={trip.id}
@@ -270,14 +255,7 @@ export function TripList({ trips, onRemoveTrip, onUpdateTrip, onAddTrip }: TripL
             layout="horizontal"
           />
         ))}
-      </div>
 
-      {/* Note */}
-      <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-        <div className="text-xs text-blue-600">
-          Note: The 90/180 rule is calculated using a rolling 180-day window. Days shown on the
-          calendar reflect the remaining days available for each specific date.
-        </div>
       </div>
 
     </div>

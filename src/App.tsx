@@ -4,7 +4,7 @@ import { Calendar } from './components/Calendar';
 import { TripList } from './components/TripList';
 import { AboutDialog } from './components/AboutDialog';
 import { useTrips } from './hooks/useTrips';
- 
+
 
 function App() {
   const { trips, addTrip, addExistingTrip, removeTrip, updateTrip } = useTrips();
@@ -26,15 +26,8 @@ function App() {
             Calculate remaining days in the Schengen Area with this free Schengen Visa Calculator.
             Track and check your days in Schengen under the 90/180 rule.
           </p>
-          <button
-            onClick={() => setAboutOpen(true)}
-            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-colors border border-blue-200"
-          >
-            <Info className="w-4 h-4" />
-            About Schengen Days Calculator
-          </button>
         </div>
-          
+
 
         {/* Calendar */}
         <div className="mb-12">
@@ -50,8 +43,29 @@ function App() {
         <div>
           <TripList trips={trips} onRemoveTrip={removeTrip} onUpdateTrip={updateTrip} onAddTrip={addExistingTrip} />
         </div>
-      </div>
 
+        <div className="text-right mt-6 max-w-4xl mx-auto">
+          <button
+            onClick={() => setAboutOpen(true)}
+            className="inline-flex items-center gap-2 px-4 py-2 text-sm cursor-pointer font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-colors border border-blue-200"
+          >
+            <Info className="w-4 h-4" />
+            About Schengen Days Calculator
+          </button>
+        </div>
+      </div>
+      {/* Footer with copyright Patrick Robertson and link to patrick.is */}
+      <footer className="mt-12 text-center text-sm text-gray-500">
+        &copy; {new Date().getFullYear()} Paddy Robertson. Built with ❤️ Visit{' '}
+        <a
+          href="https://patrick.is"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-600 hover:underline"
+        >
+          patrick.is
+        </a>
+      </footer>
       {/* About Dialog */}
       <AboutDialog open={aboutOpen} onOpenChange={setAboutOpen} />
     </div>

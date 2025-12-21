@@ -149,7 +149,7 @@ export function TripRow({
 
   // Horizontal layout (for table)
   return (
-    <div className="grid grid-cols-[1.5fr_2fr_60px_40px] sm:grid-cols-[0.7fr_1.2fr_0.6fr_48px] gap-2 sm:gap-4 px-2 sm:px-4 py-3 border-b border-gray-200 last:border-b-0 hover:bg-gray-50 transition-colors">
+    <div className="grid grid-cols-[1.5fr_2fr_60px_36px] sm:grid-cols-[0.7fr_1.2fr_0.6fr_36px] gap-2 sm:gap-4 px-2 sm:px-4 py-3 border-b border-gray-200 last:border-b-0 hover:bg-gray-50 transition-colors">
       {/* Name column with inline editing */}
       <div className="flex items-center gap-1 sm:gap-2 min-w-0">
         {/* Emoji Icon */}
@@ -174,7 +174,7 @@ export function TripRow({
             />
             <button
               onClick={handleSaveNameEdit}
-              className="p-1 sm:p-1.5 text-green-600 hover:bg-green-50 rounded transition-colors shrink-0"
+              className="p-1 sm:p-1.5 text-green-600 hover:bg-green-50 cursor-pointer rounded transition-colors shrink-0"
               aria-label="Save name"
             >
               <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
@@ -187,7 +187,7 @@ export function TripRow({
             </span>
             <button
               onClick={handleStartEditName}
-              className="p-1 sm:p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded transition-colors shrink-0"
+              className="p-1 sm:p-1.5 text-gray-400 hover:text-gray-600 cursor-pointer hover:bg-gray-100 rounded transition-colors shrink-0"
               aria-label="Edit name"
             >
               <Edit2 className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
@@ -223,7 +223,7 @@ export function TripRow({
 
       <button
         onClick={onDelete}
-        className="p-1 sm:p-2 text-red-600 hover:bg-red-50 rounded-md transition-colors shrink-0"
+        className="p-1 sm:p-2 text-red-600 hover:bg-red-50 rounded-md transition-colors cursor-pointer shrink-0"
         aria-label="Delete trip"
       >
         <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
