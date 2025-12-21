@@ -6,6 +6,7 @@ import { getTotalTripDays } from '@/lib/schengen/calculator';
 import { DateRangePicker } from '@/components/ui/date-range-picker';
 import { getDatesInRange } from '@/lib/utils/date-utils';
 import { TripRow } from '@/components/TripRow';
+import { EmojiPickerPopover } from '@/components/ui/emoji-picker';
 
 interface TripListProps {
   trips: Trip[];
@@ -20,6 +21,7 @@ export function TripList({ trips, onRemoveTrip, onUpdateTrip, onAddTrip }: TripL
   // New trip state
   const [isAdding, setIsAdding] = useState(false);
   const [newName, setNewName] = useState<string>('');
+  const [newIcon, setNewIcon] = useState<string>('');
   const [newStartDate, setNewStartDate] = useState<string>('');
   const [newEndDate, setNewEndDate] = useState<string>('');
 
@@ -58,6 +60,7 @@ export function TripList({ trips, onRemoveTrip, onUpdateTrip, onAddTrip }: TripL
   const handleStartAddTrip = () => {
     setIsAdding(true);
     setNewName('');
+    setNewIcon('');
     // Set default dates to today
     const today = format(new Date(), 'yyyy-MM-dd');
     setNewStartDate(today);
@@ -74,6 +77,7 @@ export function TripList({ trips, onRemoveTrip, onUpdateTrip, onAddTrip }: TripL
     const newTrip: Trip = {
       id: crypto.randomUUID(),
       name: newName || undefined,
+      icon: newIcon || undefined,
       startDate: newStartDate,
       endDate: newEndDate,
       days,
@@ -82,6 +86,7 @@ export function TripList({ trips, onRemoveTrip, onUpdateTrip, onAddTrip }: TripL
     onAddTrip(newTrip);
     setIsAdding(false);
     setNewName('');
+    setNewIcon('');
     setNewStartDate('');
     setNewEndDate('');
   };
@@ -89,6 +94,7 @@ export function TripList({ trips, onRemoveTrip, onUpdateTrip, onAddTrip }: TripL
   const handleCancelNewTrip = () => {
     setIsAdding(false);
     setNewName('');
+    setNewIcon('');
     setNewStartDate('');
     setNewEndDate('');
   };
@@ -182,19 +188,25 @@ export function TripList({ trips, onRemoveTrip, onUpdateTrip, onAddTrip }: TripL
         {/* New trip row */}
         {isAdding && (
           <div className="grid grid-cols-[1.5fr_2fr_60px_40px] sm:grid-cols-[0.7fr_1.2fr_0.6fr_48px] gap-2 sm:gap-4 px-2 sm:px-4 py-3 border-b border-gray-200 bg-blue-50">
-            {/* Name field */}
-            <input
-              type="text"
-              value={newName}
-              onChange={(e) => setNewName(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') handleSaveNewTrip();
-                if (e.key === 'Escape') handleCancelNewTrip();
-              }}
-              className="px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-sm min-w-0"
-              placeholder="Trip name (optional)"
-              autoFocus
-            />
+            {/* Name field with icon */}
+            <div className="flex items-center gap-1 sm:gap-2 min-w-0">
+              <EmojiPickerPopover
+                value={newIcon}
+                onChange={(emoji) => setNewIcon(emoji)}
+              />
+              <input
+                type="text"
+                value={newName}
+                onChange={(e) => setNewName(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') handleSaveNewTrip();
+                  if (e.key === 'Escape') handleCancelNewTrip();
+                }}
+                className="flex-1 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-sm min-w-0"
+                placeholder="Trip name (optional)"
+                autoFocus
+              />
+            </div>
 
             {/* Date Range Picker */}
             <DateRangePicker

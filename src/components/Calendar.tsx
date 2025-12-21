@@ -9,7 +9,7 @@ import {
   format,
   isSameDay,
 } from 'date-fns';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Eraser } from 'lucide-react';
 import { CalendarDay } from '@/components/CalendarDay';
 import { CalendarLegend } from '@/components/CalendarLegend';
 import { CalendarStatusInfo } from '@/components/CalendarStatusInfo';
@@ -18,11 +18,11 @@ import type { Trip } from '@/lib/storage/types';
 import { getDaysInMonth, getMonthStartWeekday, getDatesInRange } from '@/lib/utils/date-utils';
 import { calculateRemainingDays, getTripForDate } from '@/lib/schengen/calculator';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { useDateSelection } from '@/hooks/useDateSelection';
 
 interface CalendarProps {
   trips: Trip[];
-  selectedStart: Date | null;
-  onDateClick: (date: Date) => void;
+  onCreateTrip: (start: Date, end: Date) => void;
   onUpdateTrip?: (id: string, updates: Partial<Trip>) => void;
   onRemoveTrip?: (id: string) => void;
 }
@@ -38,10 +38,11 @@ const WEEKDAYS = (() => {
   return [...ALL_WEEKDAYS.slice(startIndex), ...ALL_WEEKDAYS.slice(0, startIndex)];
 })();
 
-export function Calendar({ trips, selectedStart, onDateClick, onUpdateTrip, onRemoveTrip }: CalendarProps) {
+export function Calendar({ trips, onCreateTrip, onUpdateTrip, onRemoveTrip }: CalendarProps) {
   const [currentMonth, setCurrentMonth] = useState(startOfMonth(new Date()));
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedTrip, setSelectedTrip] = useState<Trip | null>(null);
+  const { selectedStart, handleDateClick, clearSelection } = useDateSelection();
 
   // Sync selectedTrip with the latest trip data from trips prop
   useEffect(() => {
@@ -149,7 +150,7 @@ export function Calendar({ trips, selectedStart, onDateClick, onUpdateTrip, onRe
       setDialogOpen(true);
     } else {
       // Normal date selection for creating a trip
-      onDateClick(date);
+      handleDateClick(date, onCreateTrip);
     }
   };
 
@@ -245,7 +246,21 @@ export function Calendar({ trips, selectedStart, onDateClick, onUpdateTrip, onRe
         ))}
       </div>
 
-      <CalendarLegend />
+      <div className="mt-3 flex items-center justify-between">
+        <CalendarLegend />
+
+        {selectedStart && (
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 text-blue-800 rounded-lg ml-4">
+            <button
+              onClick={clearSelection}
+              className="inline-flex items-center gap-1 text-sm hover:cursor-pointer"
+            >
+              <Eraser className="w-4 h-4" aria-hidden="true" />
+              <span>Clear</span>
+            </button>
+          </div>
+        )}
+      </div>
 
       <CalendarStatusInfo
         remainingToday={todayStatus.remainingToday}

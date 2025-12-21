@@ -1,7 +1,7 @@
 import { isToday, getDate } from 'date-fns';
 import { cn } from '@/lib/utils';
 import type { Trip } from '@/lib/storage/types';
-import { isDateInTrip, calculateRemainingDays } from '@/lib/schengen/calculator';
+import { calculateRemainingDays, getTripForDate } from '@/lib/schengen/calculator';
 
 interface CalendarDayProps {
   date: Date;
@@ -12,10 +12,12 @@ interface CalendarDayProps {
 }
 
 export function CalendarDay({ date, isCurrentMonth, isSelected, trips, onClick }: CalendarDayProps) {
-  const isInTrip = isDateInTrip(date, trips);
   const remainingDays = calculateRemainingDays(date, trips);
   const isTodayDate = isToday(date);
   const isOverLimit = remainingDays < 0;
+  const tripForDate = getTripForDate(date, trips);
+  const isInTrip = tripForDate !== null;
+  const tripIcon = tripForDate?.icon;
 
   return (
     <button
@@ -35,6 +37,13 @@ export function CalendarDay({ date, isCurrentMonth, isSelected, trips, onClick }
         isTodayDate && 'border-blue-500 border-2 shadow-sm'
       )}
     >
+      <div className="absolute top-0 left-1">
+        {tripIcon && (
+          <span className="text-md">
+            {tripIcon}
+          </span>
+        )}
+      </div>
       <div className={cn(
         'text-lg font-bold',
         !isCurrentMonth && 'text-gray-300'
@@ -47,7 +56,7 @@ export function CalendarDay({ date, isCurrentMonth, isSelected, trips, onClick }
         isCurrentMonth && !isOverLimit && 'text-gray-500',
         isCurrentMonth && isOverLimit && 'text-red-600'
       )}>
-        {isCurrentMonth ? `${remainingDays}d` : ''}
+        {remainingDays}d
       </div>
     </button>
   );

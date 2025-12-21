@@ -55,15 +55,7 @@ export function getTotalTripDays(startDate: string, endDate: string): number {
  */
 export function isDateInTrip(date: Date, trips: Trip[]): boolean {
   const checkDate = startOfDay(date);
-  for (const trip of trips) {
-    const tripStart = startOfDay(parseISO(trip.startDate));
-    const tripEnd = startOfDay(parseISO(trip.endDate));
-    if ((isAfter(checkDate, tripStart) || isEqual(checkDate, tripStart)) &&
-        (isBefore(checkDate, tripEnd) || isEqual(checkDate, tripEnd))) {
-      return true;
-    }
-  }
-  return false;
+  return getTripForDate(checkDate, trips) !== null;
 }
 
 /**

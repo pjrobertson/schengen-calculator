@@ -4,6 +4,7 @@ import { Trash2, Edit2, Check } from 'lucide-react';
 import type { Trip } from '@/lib/storage/types';
 import { getTotalTripDays } from '@/lib/schengen/calculator';
 import { DateRangePicker } from '@/components/ui/date-range-picker';
+import { EmojiPickerPopover } from '@/components/ui/emoji-picker';
 
 interface TripRowProps {
   trip: Trip;
@@ -58,6 +59,12 @@ export function TripRow({
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
           <div className="flex items-center gap-2">
+            {/* Emoji Icon */}
+            <EmojiPickerPopover
+              value={trip.icon}
+              onChange={(emoji) => onUpdate({ icon: emoji })}
+            />
+
             {editingName ? (
               <>
                 <input
@@ -145,6 +152,12 @@ export function TripRow({
     <div className="grid grid-cols-[1.5fr_2fr_60px_40px] sm:grid-cols-[0.7fr_1.2fr_0.6fr_48px] gap-2 sm:gap-4 px-2 sm:px-4 py-3 border-b border-gray-200 last:border-b-0 hover:bg-gray-50 transition-colors">
       {/* Name column with inline editing */}
       <div className="flex items-center gap-1 sm:gap-2 min-w-0">
+        {/* Emoji Icon */}
+        <EmojiPickerPopover
+          value={trip.icon}
+          onChange={(emoji) => onUpdate({ icon: emoji })}
+        />
+
         {editingName ? (
           <>
             <input

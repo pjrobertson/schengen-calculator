@@ -1,15 +1,13 @@
 import { useState } from 'react';
-import { format } from 'date-fns';
 import { Info } from 'lucide-react';
 import { Calendar } from './components/Calendar';
 import { TripList } from './components/TripList';
 import { AboutDialog } from './components/AboutDialog';
 import { useTrips } from './hooks/useTrips';
-import { useDateSelection } from './hooks/useDateSelection';
+ 
 
 function App() {
   const { trips, addTrip, addExistingTrip, removeTrip, updateTrip } = useTrips();
-  const { selectedStart, handleDateClick, clearSelection } = useDateSelection();
   const [aboutOpen, setAboutOpen] = useState(false);
 
   const handleTripCreate = (start: Date, end: Date) => {
@@ -35,27 +33,14 @@ function App() {
             <Info className="w-4 h-4" />
             About Schengen Days Calculator
           </button>
-          {selectedStart && (
-            <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-blue-100 text-blue-800 rounded-lg">
-              <span className="text-sm font-medium">
-                Start date selected: {format(selectedStart, 'MMM d, yyyy')}
-              </span>
-              <button
-                onClick={clearSelection}
-                className="text-sm underline hover:no-underline"
-              >
-                Cancel
-              </button>
-            </div>
-          )}
         </div>
+          
 
         {/* Calendar */}
         <div className="mb-12">
           <Calendar
             trips={trips}
-            selectedStart={selectedStart}
-            onDateClick={(date) => handleDateClick(date, handleTripCreate)}
+            onCreateTrip={handleTripCreate}
             onUpdateTrip={updateTrip}
             onRemoveTrip={removeTrip}
           />
