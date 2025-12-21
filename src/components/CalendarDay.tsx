@@ -1,5 +1,5 @@
 import { isToday, getDate } from 'date-fns';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/utils/cn';
 import type { Trip } from '@/lib/storage/types';
 import { calculateRemainingDays, getTripForDate } from '@/lib/schengen/calculator';
 

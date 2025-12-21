@@ -75,6 +75,24 @@ export function getTripForDate(date: Date, trips: Trip[]): Trip | null {
 }
 
 /**
+ * Check if there is any trip in the date range given
+ */
+export function getTripInDateRange(startDate: Date, endDate: Date, trips: Trip[]): Trip | null {
+  const rangeStart = startOfDay(startDate);
+  const rangeEnd = startOfDay(endDate);
+
+  for (const trip of trips) {
+    const tripStart = startOfDay(parseISO(trip.startDate));
+    const tripEnd = startOfDay(parseISO(trip.endDate));
+
+    // Check for overlap
+    if (isBefore(tripStart, addDays(rangeEnd, 1)) && isAfter(tripEnd, subDays(rangeStart, 1))) {
+      return trip;
+    }
+  }
+  return null;
+}
+/**
  * Check if adding a new trip would violate the 90/180 rule
  * Returns true if the trip is valid, false if it would exceed limits
  */

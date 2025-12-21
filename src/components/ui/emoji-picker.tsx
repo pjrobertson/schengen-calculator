@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import EmojiPicker, { Theme, EmojiStyle } from 'emoji-picker-react';
-import type { EmojiClickData } from 'emoji-picker-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Smile } from 'lucide-react';
+import { EmojiPicker } from './EmojiPicker';
 
 interface EmojiPickerPopoverProps {
   value?: string;
@@ -13,8 +12,8 @@ interface EmojiPickerPopoverProps {
 export function EmojiPickerPopover({ value, onChange, children }: EmojiPickerPopoverProps) {
   const [open, setOpen] = useState(false);
 
-  const handleEmojiClick = (emojiData: EmojiClickData) => {
-    onChange(emojiData.emoji);
+  const handleEmojiClick = (emoji: string) => {
+    onChange(emoji);
     setOpen(false);
   };
 
@@ -32,15 +31,7 @@ export function EmojiPickerPopover({ value, onChange, children }: EmojiPickerPop
         )}
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0 border-0" align="start">
-        <EmojiPicker
-          onEmojiClick={handleEmojiClick}
-          theme={Theme.AUTO}
-          searchPlaceholder="Search emoji..."
-          width={350}
-          height={400}
-          previewConfig={{ showPreview: false }}
-          emojiStyle={EmojiStyle.NATIVE}
-        />
+        <EmojiPicker onEmojiClick={handleEmojiClick} />
       </PopoverContent>
     </Popover>
   );

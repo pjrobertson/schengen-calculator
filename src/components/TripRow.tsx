@@ -12,6 +12,7 @@ interface TripRowProps {
   onUpdate: (updates: Partial<Trip>) => void;
   onDelete: () => void;
   layout?: 'horizontal' | 'vertical';
+  trips: Trip[];
 }
 
 export function TripRow({
@@ -20,6 +21,7 @@ export function TripRow({
   onUpdate,
   onDelete,
   layout = 'horizontal',
+  trips,
 }: TripRowProps) {
   const [editingName, setEditingName] = useState(false);
   const [editName, setEditName] = useState('');
@@ -113,6 +115,7 @@ export function TripRow({
             onRangeChange={handleDateRangeChange}
             triggerClassName="w-full"
             disabledDates={disabledDates}
+            trips={trips.filter(t => t.id !== trip.id)}
           >
             <div className="px-3 py-2 border border-gray-300 rounded bg-white hover:border-blue-500 transition-colors cursor-pointer">
               <div className="flex justify-between items-center">
@@ -203,6 +206,7 @@ export function TripRow({
         onRangeChange={handleDateRangeChange}
         triggerClassName="w-full min-w-0"
         disabledDates={disabledDates}
+        trips={trips.filter(t => t.id !== trip.id)}
       >
         <div className="px-2 sm:px-3 py-1.5 border border-gray-300 rounded bg-white hover:border-blue-500 transition-colors cursor-pointer min-w-0">
           <div className="flex justify-between items-center gap-1 sm:gap-2">

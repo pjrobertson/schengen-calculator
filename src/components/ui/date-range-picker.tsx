@@ -3,7 +3,9 @@ import { parseISO, format } from 'date-fns';
 import type { DateRange } from 'react-day-picker';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { cn } from '@/lib/utils';
+import { getTripInDateRange } from '@/lib/schengen/calculator';
+import type { Trip } from '@/lib/storage/types';
+import { cn } from '@/lib/utils/cn';
 
 interface DateRangePickerProps {
   startDate: string; // ISO date string
@@ -13,6 +15,7 @@ interface DateRangePickerProps {
   triggerClassName?: string;
   children?: React.ReactNode;
   disabledDates?: Date[]; // Array of dates to disable
+  trips: Trip[]
 }
 
 export function DateRangePicker({
@@ -23,6 +26,7 @@ export function DateRangePicker({
   triggerClassName,
   children,
   disabledDates = [],
+  trips,
 }: DateRangePickerProps) {
   const [open, setOpen] = React.useState(false);
   const [dateRange, setDateRange] = React.useState<DateRange | undefined>(undefined);
@@ -49,16 +53,24 @@ export function DateRangePicker({
 
   const handleSelect = (_nextRange: DateRange | undefined, selectedDay: Date) => {
     setDateRange((prev) => {
+      let trip: Trip | null = null;
       if (isFirstClick) {
         // First click: Set 'from' date to the clicked date
         setIsFirstClick(false);
 
         const newFrom = selectedDay;
-        const existingTo = prev?.to;
+        const existingTo = trip ? undefined : prev?.to;
+        trip = prev?.to ? getTripInDateRange(selectedDay, prev?.to, trips) : null;
 
         // If new 'from' is after existing 'to', clear 'to'
         if (existingTo && newFrom > existingTo) {
           return { from: newFrom, to: undefined };
+        }
+
+
+        trip = prev?.to ? getTripInDateRange(selectedDay, prev?.to, trips) : null;
+        if (trip) {
+          return { from: selectedDay, to: undefined };
         }
 
         // Otherwise keep the existing 'to' date
@@ -69,12 +81,18 @@ export function DateRangePicker({
 
         const existingFrom = prev?.from;
 
+
         if (!existingFrom) {
-          // Shouldn't happen, but handle it
+          // If we're trying to overlap a trip, just make a new selection starting from the clicked date
           return { from: selectedDay, to: undefined };
         }
 
         if (selectedDay < existingFrom) {
+          trip = existingFrom ? getTripInDateRange(selectedDay, existingFrom, trips) : null;
+          if (trip) {
+            setIsFirstClick(false);
+            return { from: selectedDay, to: undefined };
+          }
           // If clicked date is before 'from', extend 'from' back to this date
           const newRange = { from: selectedDay, to: existingFrom };
 
@@ -85,6 +103,11 @@ export function DateRangePicker({
 
           return newRange;
         } else {
+          trip = existingFrom ? getTripInDateRange(existingFrom, selectedDay, trips) : null;
+          if (trip) {
+            setIsFirstClick(false);
+            return { from: selectedDay, to: undefined };
+          }
           // If clicked date is equal to or after 'from', set it as 'to'
           const newRange = { from: existingFrom, to: selectedDay };
 

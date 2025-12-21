@@ -198,6 +198,7 @@ export function TripList({ trips, onRemoveTrip, onUpdateTrip, onAddTrip }: TripL
               }}
               triggerClassName="w-full min-w-0"
               disabledDates={disabledDatesForNewTrip}
+              trips={trips}
             >
               <div className="px-2 sm:px-3 py-1.5 border border-gray-300 rounded bg-white hover:border-blue-500 transition-colors cursor-pointer min-w-0">
                 <div className="flex justify-between items-center gap-1 sm:gap-2">
@@ -253,6 +254,7 @@ export function TripList({ trips, onRemoveTrip, onUpdateTrip, onAddTrip }: TripL
             onUpdate={(updates) => onUpdateTrip(trip.id, updates)}
             onDelete={() => handleDeleteTrip(trip)}
             layout="horizontal"
+            trips={trips}
           />
         ))}
 

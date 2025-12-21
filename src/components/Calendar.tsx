@@ -283,6 +283,7 @@ export function Calendar({ trips, onCreateTrip, onUpdateTrip, onRemoveTrip }: Ca
               onUpdate={handleTripUpdate}
               onDelete={handleTripDelete}
               layout="vertical"
+              trips={trips.filter(t => t.id !== selectedTrip.id)}
             />
           )}
         </DialogContent>
