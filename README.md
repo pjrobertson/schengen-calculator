@@ -4,6 +4,10 @@
 
 A web application to help travellers track their time spent in the Schengen Area and ensure compliance with the Schengen 90/180 rule in Europe. Written with 20+ years of development experience, guiding an AI tool (because leaving AI to do its thing alone will give you garbage).
 
+| Mobile | Desktop |
+|--------|---------|
+| ![Mobile version](docs/mobile.png) | ![Desktop version](docs/desktop.png)
+
 ## Overview
 
 The Schengen Area allows visa-free travel for many, but with an important restriction: you can only spend **90 days within any 180-day period** in the Schengen zone. This calculator helps you:
