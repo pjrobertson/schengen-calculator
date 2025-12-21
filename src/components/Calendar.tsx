@@ -267,8 +267,7 @@ export function Calendar({ trips, onCreateTrip, onUpdateTrip, onRemoveTrip }: Ca
         currentTrip={todayStatus.currentTrip}
         remainingAfterTrip={todayStatus.remainingAfterTrip}
         resetDate={todayStatus.resetDate}
-        totalTrips={trips.length}
-        totalDays={trips.reduce((sum, trip) => sum + trip.days, 0)}
+        trips={trips}
       />
 
       {/* Trip Details Dialog */}

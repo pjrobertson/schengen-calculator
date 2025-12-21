@@ -42,6 +42,7 @@ function Calendar({
           date.toLocaleString("default", { month: "short" }),
         ...formatters,
       }}
+      weekStartsOn={1}
       classNames={{
         root: cn("w-fit", defaultClassNames.root),
         months: cn(
