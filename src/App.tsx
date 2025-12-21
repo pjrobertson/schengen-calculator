@@ -5,7 +5,6 @@ import { TripList } from './components/TripList';
 import { AboutDialog } from './components/AboutDialog';
 import { useTrips } from './hooks/useTrips';
 
-
 function App() {
   const { trips, addTrip, addExistingTrip, removeTrip, updateTrip } = useTrips();
   const [aboutOpen, setAboutOpen] = useState(false);
@@ -56,15 +55,20 @@ function App() {
       </div>
       {/* Footer with copyright Patrick Robertson and link to patrick.is */}
       <footer className="mt-12 text-center text-sm text-gray-500">
-        &copy; {new Date().getFullYear()} Paddy Robertson. Built with ❤️ Visit{' '}
-        <a
-          href="https://patrick.is"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-600 hover:underline"
-        >
-          patrick.is
-        </a>
+        <div>
+          &copy; {new Date().getFullYear()} Paddy Robertson. Built with ❤️ Visit{' '}
+          <a
+            href="https://patrick.is"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600 hover:underline"
+          >
+            patrick.is
+          </a>
+        </div>
+        <div className="mt-1 text-xs text-gray-400">
+          Version: {import.meta.env.VITE_GIT_HASH}
+        </div>
       </footer>
       {/* About Dialog */}
       <AboutDialog open={aboutOpen} onOpenChange={setAboutOpen} />
