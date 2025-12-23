@@ -6,6 +6,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { getTripInDateRange } from '@/lib/schengen/calculator';
 import type { Trip } from '@/lib/storage/types';
 import { cn } from '@/lib/utils/cn';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 
 interface DateRangePickerProps {
   startDate: string; // ISO date string
@@ -31,6 +32,7 @@ export function DateRangePicker({
   const [open, setOpen] = React.useState(false);
   const [dateRange, setDateRange] = React.useState<DateRange | undefined>(undefined);
   const [isFirstClick, setIsFirstClick] = React.useState(true);
+  const isDesktop = useMediaQuery('(min-width: 640px)');
 
   // Convert ISO strings to Date objects for initial value
   const initialRange = React.useMemo(() => {
@@ -148,9 +150,10 @@ export function DateRangePicker({
             mode="range"
             selected={dateRange}
             onSelect={handleSelect}
-            numberOfMonths={2}
+            numberOfMonths={isDesktop ? 2 : 1}
             defaultMonth={initialRange.from}
             disabled={disabledDates}
+            showOutsideDays={!isDesktop}
           />
         </div>
       </PopoverContent>

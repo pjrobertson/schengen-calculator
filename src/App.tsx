@@ -10,7 +10,8 @@ function App() {
   const [aboutOpen, setAboutOpen] = useState(false);
 
   const handleTripCreate = (start: Date, end: Date) => {
-    addTrip(start, end);
+    const newTrip = addTrip(start, end);
+    return newTrip;
   };
 
   return (

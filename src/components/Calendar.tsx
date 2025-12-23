@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import {
   startOfDay,
   startOfMonth,
@@ -6,19 +6,20 @@ import {
   addMonths,
   addDays,
   parseISO,
-  format,
   isSameDay,
 } from 'date-fns';
 import { ChevronLeft, ChevronRight, Eraser } from 'lucide-react';
 import { CalendarDay } from '@/components/CalendarDay';
 import { CalendarLegend } from '@/components/CalendarLegend';
 import { CalendarStatusInfo } from '@/components/CalendarStatusInfo';
-import { TripRow } from '@/components/TripRow';
+import { TripRow, type TripRowHandle } from '@/components/TripRow';
 import type { Trip } from '@/lib/storage/types';
 import { getDaysInMonth, getMonthStartWeekday, getDatesInRange } from '@/lib/utils/date-utils';
 import { calculateRemainingDays, getTripForDate } from '@/lib/schengen/calculator';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { useDateSelection } from '@/hooks/useDateSelection';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
+import { formatLocaleDate } from '@/lib/utils/date-format';
 
 interface CalendarProps {
   trips: Trip[];
@@ -43,6 +44,8 @@ export function Calendar({ trips, onCreateTrip, onUpdateTrip, onRemoveTrip }: Ca
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedTrip, setSelectedTrip] = useState<Trip | null>(null);
   const { selectedStart, handleDateClick, clearSelection } = useDateSelection();
+  const tripRowRef = useRef<TripRowHandle>(null);
+  const isDesktop = useMediaQuery('(min-width: 640px)');
 
   // Sync selectedTrip with the latest trip data from trips prop
   useEffect(() => {
@@ -116,15 +119,17 @@ export function Calendar({ trips, onCreateTrip, onUpdateTrip, onRemoveTrip }: Ca
     ...daysInMonth.map(date => ({ date, isCurrentMonth: true })),
   ];
 
-  // Add empty cells to complete the last week
-  const remainingDays = 7 - (calendarDays.length % 7);
-  if (remainingDays < 7) {
-    const lastDate = daysInMonth[daysInMonth.length - 1];
-    for (let i = 1; i <= remainingDays; i++) {
-      calendarDays.push({
-        date: addDays(lastDate, i),
-        isCurrentMonth: false,
-      });
+  // Add empty cells to complete the last week (only on mobile)
+  if (!isDesktop) {
+    const remainingDays = 7 - (calendarDays.length % 7);
+    if (remainingDays < 7) {
+      const lastDate = daysInMonth[daysInMonth.length - 1];
+      for (let i = 1; i <= remainingDays; i++) {
+        calendarDays.push({
+          date: addDays(lastDate, i),
+          isCurrentMonth: false,
+        });
+      }
     }
   }
 
@@ -141,16 +146,20 @@ export function Calendar({ trips, onCreateTrip, onUpdateTrip, onRemoveTrip }: Ca
   };
 
   const handleDateClickInternal = (date: Date) => {
-    // Check if this date has a trip
-    const tripForDate = getTripForDate(date, trips);
-
+    const tripForDate = getTripForDate(date, trips); 
     if (tripForDate) {
-      // Open dialog with trip details
+      // Open dialog with trip details and clear selection
       setSelectedTrip(tripForDate);
       setDialogOpen(true);
+      clearSelection();
+      return;
     } else {
-      // Normal date selection for creating a trip
-      handleDateClick(date, onCreateTrip);
+      const newTrip = handleDateClick(date, onCreateTrip);
+      if (newTrip) {
+        // Open dialog for the newly created trip
+        setSelectedTrip(newTrip);
+        setDialogOpen(true);
+      }
     }
   };
 
@@ -171,6 +180,12 @@ export function Calendar({ trips, onCreateTrip, onUpdateTrip, onRemoveTrip }: Ca
       onRemoveTrip(selectedTrip.id);
       handleCloseDialog();
     }
+  };
+
+  const handleDone = () => {
+    // Finalize any pending edits before closing
+    tripRowRef.current?.finalizePendingEdits();
+    handleCloseDialog();
   };
 
   // Calculate disabled dates for the selected trip (all other trips' dates)
@@ -201,7 +216,7 @@ export function Calendar({ trips, onCreateTrip, onUpdateTrip, onRemoveTrip }: Ca
 
         <div className="flex items-center gap-4">
           <h2 className="text-xl font-semibold">
-            {format(currentMonth, 'MMMM yyyy')}
+            {formatLocaleDate(currentMonth, 'long')}
           </h2>
           <button
             onClick={goToToday}
@@ -278,6 +293,7 @@ export function Calendar({ trips, onCreateTrip, onUpdateTrip, onRemoveTrip }: Ca
           </DialogHeader>
           {selectedTrip && (
             <TripRow
+              ref={tripRowRef}
               trip={selectedTrip}
               disabledDates={disabledDatesForSelectedTrip}
               onUpdate={handleTripUpdate}
@@ -286,6 +302,14 @@ export function Calendar({ trips, onCreateTrip, onUpdateTrip, onRemoveTrip }: Ca
               trips={trips.filter(t => t.id !== selectedTrip.id)}
             />
           )}
+          <DialogFooter>
+            <button
+              onClick={handleDone}
+              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 cursor-pointer transition-colors"
+            >
+              Done
+            </button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>

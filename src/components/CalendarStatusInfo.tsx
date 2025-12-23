@@ -1,5 +1,6 @@
 import { format, parseISO, startOfDay, subDays, eachDayOfInterval } from 'date-fns';
 import type { Trip } from '@/lib/storage/types';
+import { formatLocaleDate } from '@/lib/utils/date-format';
 
 interface CalendarStatusInfoProps {
   remainingToday: number;
@@ -49,7 +50,7 @@ export function CalendarStatusInfo({
 
         {currentTrip && remainingAfterTrip !== null && (
           <p className={`text-sm ${remainingAfterTrip < 0 ? 'text-red-700' : 'text-blue-800'}`}>
-            After this trip ends on {format(parseISO(currentTrip.endDate), 'MMM d, yyyy')},
+            After this trip ends on {formatLocaleDate(parseISO(currentTrip.endDate), 'medium')},
             you will have {remainingAfterTrip} days left.
           </p>
         )}
@@ -57,7 +58,7 @@ export function CalendarStatusInfo({
         {resetDate && (
           <p className="text-sm text-red-700 font-medium mt-3 pt-3 border-t border-red-200">
             ⚠️ You have overstayed your 90 days. It will reset on{' '}
-            {format(resetDate, 'MMM d, yyyy')} and you can return then.
+            {formatLocaleDate(resetDate, 'medium')} and you can return then.
           </p>
         )}
 

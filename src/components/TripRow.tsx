@@ -1,10 +1,11 @@
-import { useState } from 'react';
-import { parseISO, format } from 'date-fns';
+import { useState, useImperativeHandle, forwardRef } from 'react';
+import { parseISO } from 'date-fns';
 import { Trash2, Edit2, Check } from 'lucide-react';
 import type { Trip } from '@/lib/storage/types';
 import { getTotalTripDays } from '@/lib/schengen/calculator';
 import { DateRangePicker } from '@/components/ui/date-range-picker';
 import { EmojiPickerPopover } from '@/components/ui/emoji-picker';
+import { formatLocaleDate } from '@/lib/utils/date-format';
 
 interface TripRowProps {
   trip: Trip;
@@ -15,14 +16,18 @@ interface TripRowProps {
   trips: Trip[];
 }
 
-export function TripRow({
+export interface TripRowHandle {
+  finalizePendingEdits: () => void;
+}
+
+export const TripRow = forwardRef<TripRowHandle, TripRowProps>(({
   trip,
   disabledDates,
   onUpdate,
   onDelete,
   layout = 'horizontal',
   trips,
-}: TripRowProps) {
+}, ref) => {
   const [editingName, setEditingName] = useState(false);
   const [editName, setEditName] = useState('');
 
@@ -44,6 +49,15 @@ export function TripRow({
     setEditingName(false);
     setEditName('');
   };
+
+  // Expose method to finalize any pending edits
+  useImperativeHandle(ref, () => ({
+    finalizePendingEdits: () => {
+      if (editingName) {
+        handleSaveNameEdit();
+      }
+    }
+  }));
 
   const handleDateRangeChange = (newStartDate: string, newEndDate: string) => {
     const days = getTotalTripDays(newStartDate, newEndDate);
@@ -91,7 +105,10 @@ export function TripRow({
               </>
             ) : (
               <>
-                <span className="flex-1 text-gray-900 px-3 py-2">
+                <span
+                  onClick={handleStartEditName}
+                  className="flex-1 text-gray-900 px-3 py-2 cursor-pointer hover:bg-gray-100 rounded transition-colors"
+                >
                   {trip.name || <span className="text-gray-400 italic">No name</span>}
                 </span>
                 <button
@@ -119,9 +136,9 @@ export function TripRow({
           >
             <div className="px-3 py-2 border border-gray-300 rounded bg-white hover:border-blue-500 transition-colors cursor-pointer">
               <div className="flex justify-between items-center">
-                <span className="font-medium">{format(startDate, 'MMM d, yyyy')}</span>
+                <span className="font-medium">{formatLocaleDate(startDate, 'medium')}</span>
                 <span className="text-gray-400">→</span>
-                <span className="font-medium">{format(endDate, 'MMM d, yyyy')}</span>
+                <span className="font-medium">{formatLocaleDate(endDate, 'medium')}</span>
               </div>
             </div>
           </DateRangePicker>
@@ -185,7 +202,10 @@ export function TripRow({
           </>
         ) : (
           <>
-            <span className="flex-1 text-gray-700 text-sm sm:text-base truncate">
+            <span
+              onClick={handleStartEditName}
+              className="flex-1 text-gray-700 text-sm sm:text-base truncate cursor-pointer hover:bg-gray-100 rounded px-1 transition-colors"
+            >
               {trip.name || <span className="text-gray-400 italic">No name</span>}
             </span>
             <button
@@ -211,13 +231,13 @@ export function TripRow({
         <div className="px-2 sm:px-3 py-1.5 border border-gray-300 rounded bg-white hover:border-blue-500 transition-colors cursor-pointer min-w-0">
           <div className="flex justify-between items-center gap-1 sm:gap-2">
             <span className="font-medium text-xs sm:text-sm whitespace-nowrap">
-              <span className="hidden sm:inline">{format(startDate, 'MMM d, yyyy')}</span>
-              <span className="sm:hidden">{format(startDate, 'M/d/yy')}</span>
+              <span className="hidden sm:inline">{formatLocaleDate(startDate, 'medium')}</span>
+              <span className="sm:hidden">{formatLocaleDate(startDate, 'short')}</span>
             </span>
             <span className="text-gray-400 text-xs sm:text-sm">→</span>
             <span className="font-medium text-xs sm:text-sm whitespace-nowrap">
-              <span className="hidden sm:inline">{format(endDate, 'MMM d, yyyy')}</span>
-              <span className="sm:hidden">{format(endDate, 'M/d/yy')}</span>
+              <span className="hidden sm:inline">{formatLocaleDate(endDate, 'medium')}</span>
+              <span className="sm:hidden">{formatLocaleDate(endDate, 'short')}</span>
             </span>
           </div>
         </div>
@@ -234,4 +254,6 @@ export function TripRow({
       </button>
     </div>
   );
-}
+});
+
+TripRow.displayName = 'TripRow';

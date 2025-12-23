@@ -7,10 +7,12 @@ export function useDateSelection() {
     if (!selectedStart) {
       // First click - select start date
       setSelectedStart(date);
+      return null;
     } else {
       // Second click - create trip and reset
-      onTripCreate(selectedStart, date);
+      const newTrip = onTripCreate(selectedStart, date);
       setSelectedStart(null);
+      return newTrip;
     }
   };
 

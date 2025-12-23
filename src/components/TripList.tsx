@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { parseISO, format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import { Undo, Plus, X, Check } from 'lucide-react';
 import type { Trip } from '@/lib/storage/types';
 import { getTotalTripDays } from '@/lib/schengen/calculator';
@@ -7,6 +7,7 @@ import { DateRangePicker } from '@/components/ui/date-range-picker';
 import { getDatesInRange } from '@/lib/utils/date-utils';
 import { TripRow } from '@/components/TripRow';
 import { EmojiPickerPopover } from '@/components/ui/emoji-picker';
+import { formatLocaleDate } from '@/lib/utils/date-format';
 
 interface TripListProps {
   trips: Trip[];
@@ -203,13 +204,13 @@ export function TripList({ trips, onRemoveTrip, onUpdateTrip, onAddTrip }: TripL
               <div className="px-2 sm:px-3 py-1.5 border border-gray-300 rounded bg-white hover:border-blue-500 transition-colors cursor-pointer min-w-0">
                 <div className="flex justify-between items-center gap-1 sm:gap-2">
                   <span className="font-medium text-xs sm:text-sm whitespace-nowrap">
-                    <span className="hidden sm:inline">{format(parseISO(newStartDate), 'MMM d, yyyy')}</span>
-                    <span className="sm:hidden">{format(parseISO(newStartDate), 'M/d/yy')}</span>
+                    <span className="hidden sm:inline">{formatLocaleDate(parseISO(newStartDate), 'medium')}</span>
+                    <span className="sm:hidden">{formatLocaleDate(parseISO(newStartDate), 'short')}</span>
                   </span>
                   <span className="text-gray-400 text-xs sm:text-sm">→</span>
                   <span className="font-medium text-xs sm:text-sm whitespace-nowrap">
-                    <span className="hidden sm:inline">{format(parseISO(newEndDate), 'MMM d, yyyy')}</span>
-                    <span className="sm:hidden">{format(parseISO(newEndDate), 'M/d/yy')}</span>
+                    <span className="hidden sm:inline">{formatLocaleDate(parseISO(newEndDate), 'medium')}</span>
+                    <span className="sm:hidden">{formatLocaleDate(parseISO(newEndDate), 'short')}</span>
                   </span>
                 </div>
               </div>

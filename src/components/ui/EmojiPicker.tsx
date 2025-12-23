@@ -9,6 +9,12 @@ interface EmojiPickerProps {
 export function EmojiPicker({ onEmojiClick, dataSource }: EmojiPickerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const pickerRef = useRef<any>(null);
+  const onEmojiClickRef = useRef(onEmojiClick);
+
+  // Keep the callback ref up to date
+  useEffect(() => {
+    onEmojiClickRef.current = onEmojiClick;
+  }, [onEmojiClick]);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -22,7 +28,7 @@ export function EmojiPicker({ onEmojiClick, dataSource }: EmojiPickerProps) {
 
     // Add event listener
     const handleEmojiClick = (event: any) => {
-      onEmojiClick(event.detail.unicode);
+      onEmojiClickRef.current(event.detail.unicode);
     };
 
     picker.addEventListener('emoji-click', handleEmojiClick);
@@ -37,7 +43,7 @@ export function EmojiPicker({ onEmojiClick, dataSource }: EmojiPickerProps) {
         containerRef.current.removeChild(picker);
       }
     };
-  }, [onEmojiClick, dataSource]);
+  }, [dataSource]); // Only recreate when dataSource changes
 
   return <div ref={containerRef} />;
 }

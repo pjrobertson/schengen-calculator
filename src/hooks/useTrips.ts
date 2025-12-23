@@ -30,6 +30,7 @@ export function useTrips() {
 
     storage.addTrip(newTrip);
     setTrips(storage.getTrips());
+    return newTrip;
   };
 
   // Remove a trip by ID
