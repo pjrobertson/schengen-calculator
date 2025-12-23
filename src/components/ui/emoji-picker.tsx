@@ -7,9 +7,10 @@ interface EmojiPickerPopoverProps {
   value?: string;
   onChange: (emoji: string) => void;
   children?: React.ReactNode;
+  dataSource?: string;
 }
 
-export function EmojiPickerPopover({ value, onChange, children }: EmojiPickerPopoverProps) {
+export function EmojiPickerPopover({ value, onChange, children, dataSource }: EmojiPickerPopoverProps) {
   const [open, setOpen] = useState(false);
 
   const handleEmojiClick = (emoji: string) => {
@@ -31,7 +32,7 @@ export function EmojiPickerPopover({ value, onChange, children }: EmojiPickerPop
         )}
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0 border-0" align="start">
-        <EmojiPicker onEmojiClick={handleEmojiClick} />
+        <EmojiPicker onEmojiClick={handleEmojiClick} dataSource={dataSource} />
       </PopoverContent>
     </Popover>
   );

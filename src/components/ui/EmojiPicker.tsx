@@ -1,49 +1,30 @@
-import { useEffect, useRef } from 'react';
-import Picker from 'emoji-picker-element/picker';
+import { useEffect, useRef, createElement } from 'react';
+import 'emoji-picker-element';
 
 interface EmojiPickerProps {
   onEmojiClick: (emoji: string) => void;
   dataSource?: string;
 }
 
-export function EmojiPicker({ onEmojiClick, dataSource }: EmojiPickerProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const pickerRef = useRef<any>(null);
-  const onEmojiClickRef = useRef(onEmojiClick);
-
-  // Keep the callback ref up to date
-  useEffect(() => {
-    onEmojiClickRef.current = onEmojiClick;
-  }, [onEmojiClick]);
+export function EmojiPicker({ onEmojiClick, dataSource = '/emoji-data/data-en.json' }: EmojiPickerProps) {
+  const ref = useRef<any>(null);
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    const picker = ref.current;
+    if (!picker) return;
 
-    // Create picker instance with custom configuration
-    const picker = new Picker({
-      dataSource: dataSource || '/emoji-data/data-en.json',
-    });
+    // Set the data source to use local emoji data
+    picker.dataSource = dataSource;
 
-    pickerRef.current = picker;
-
-    // Add event listener
     const handleEmojiClick = (event: any) => {
-      onEmojiClickRef.current(event.detail.unicode);
+      onEmojiClick(event.detail.unicode);
     };
 
     picker.addEventListener('emoji-click', handleEmojiClick);
-
-    // Append picker to container
-    containerRef.current.appendChild(picker);
-
-    // Cleanup
     return () => {
       picker.removeEventListener('emoji-click', handleEmojiClick);
-      if (containerRef.current && containerRef.current.contains(picker)) {
-        containerRef.current.removeChild(picker);
-      }
     };
-  }, [dataSource]); // Only recreate when dataSource changes
+  }, [onEmojiClick, dataSource]);
 
-  return <div ref={containerRef} />;
+  return createElement('emoji-picker', { ref });
 }

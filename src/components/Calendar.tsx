@@ -8,7 +8,7 @@ import {
   parseISO,
   isSameDay,
 } from 'date-fns';
-import { ChevronLeft, ChevronRight, Eraser } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Eraser, Trash2 } from 'lucide-react';
 import { CalendarDay } from '@/components/CalendarDay';
 import { CalendarLegend } from '@/components/CalendarLegend';
 import { CalendarStatusInfo } from '@/components/CalendarStatusInfo';
@@ -302,7 +302,16 @@ export function Calendar({ trips, onCreateTrip, onUpdateTrip, onRemoveTrip }: Ca
               trips={trips.filter(t => t.id !== selectedTrip.id)}
             />
           )}
-          <DialogFooter>
+          <DialogFooter className="sm:justify-between">
+            <button
+              onClick={handleTripDelete}
+              className="flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-red-50 rounded-md transition-colors cursor-pointer"
+              aria-label="Delete trip"
+            >
+              
+                  <Trash2 className="w-4 h-4" />
+                  Delete Trip
+            </button>
             <button
               onClick={handleDone}
               className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 cursor-pointer transition-colors"

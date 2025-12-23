@@ -151,18 +151,6 @@ export const TripRow = forwardRef<TripRowHandle, TripRowProps>(({
             {trip.days} days
           </div>
         </div>
-
-        {/* Delete button */}
-        <div className="pt-2 border-t border-gray-200">
-          <button
-            onClick={onDelete}
-            className="w-full flex items-center justify-center gap-2 px-4 py-2 text-red-600 hover:bg-red-50 rounded-md transition-colors"
-            aria-label="Delete trip"
-          >
-            <Trash2 className="w-4 h-4" />
-            <span>Delete Trip</span>
-          </button>
-        </div>
       </div>
     );
   }
