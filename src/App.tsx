@@ -20,7 +20,7 @@ function App() {
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">
-            Free Schengen Calculator - Track Your 90/180 Visa Days
+            Free Schengen Calculator - Track 90/180 Visa Days
           </h1>
           <p className="text-gray-600 text-base sm:text-lg mb-4 max-w-3xl mx-auto">
             Calculate remaining days in the Schengen Area with this free Schengen Visa Calculator.
